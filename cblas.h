@@ -402,6 +402,10 @@ void   cblas_sbgemv(OPENBLAS_CONST enum CBLAS_ORDER order,  OPENBLAS_CONST enum 
 
 void   cblas_sbgemm(OPENBLAS_CONST enum CBLAS_ORDER Order, OPENBLAS_CONST enum CBLAS_TRANSPOSE TransA, OPENBLAS_CONST enum CBLAS_TRANSPOSE TransB, OPENBLAS_CONST blasint M, OPENBLAS_CONST blasint N, OPENBLAS_CONST blasint K,
 		    OPENBLAS_CONST float alpha, OPENBLAS_CONST bfloat16 *A, OPENBLAS_CONST blasint lda, OPENBLAS_CONST bfloat16 *B, OPENBLAS_CONST blasint ldb, OPENBLAS_CONST float beta, float *C, OPENBLAS_CONST blasint ldc);
+
+void cblas_yaconv(IFLOAT *image, blasint n, blasint h, blasint w, blasint c,
+            IFLOAT *filter, blasint fh, blasint fw, blasint m,
+            IFLOAT *output, blasint ph, blasint pw);
 #ifdef __cplusplus
 }
 #endif  /* __cplusplus */

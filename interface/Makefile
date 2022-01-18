@@ -282,6 +282,7 @@ CSBLAS3OBJS   = \
 	cblas_sgemm.$(SUFFIX) cblas_ssymm.$(SUFFIX) cblas_strmm.$(SUFFIX) cblas_strsm.$(SUFFIX) \
 	cblas_ssyrk.$(SUFFIX) cblas_ssyr2k.$(SUFFIX) cblas_somatcopy.$(SUFFIX)  cblas_simatcopy.$(SUFFIX)\
 	cblas_sgeadd.$(SUFFIX)
+CSBLAS3OBJS += cblas_yaconv.$(SUFFIX)
 
 ifeq ($(BUILD_BFLOAT16),1)
 CSBBLAS1OBJS = cblas_sbdot.$(SUFFIX)
@@ -2343,3 +2344,5 @@ cblas_zgeadd.$(SUFFIX) cblas_zgeadd.$(PSUFFIX) : zgeadd.c
 cblas_xerbla.$(SUFFIX) cblas_xerbla.$(PSUFFIX) : xerbla.c
 	$(CC) -c $(CFLAGS) -DCBLAS $< -o $(@F)
 
+cblas_yaconv.$(SUFFIX) : yaconv.c
+	$(CC) -c $(CFLAGS) -DCBLAS $< -o $(@F)
