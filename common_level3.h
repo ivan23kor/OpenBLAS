@@ -1939,10 +1939,6 @@ int dgeadd_k(BLASLONG, BLASLONG, double, double*, BLASLONG, double, double *, BL
 int cgeadd_k(BLASLONG, BLASLONG, float, float, float*, BLASLONG, float, float, float *, BLASLONG); 
 int zgeadd_k(BLASLONG, BLASLONG, double,double, double*, BLASLONG, double, double, double *, BLASLONG); 
 
-void yaconv(IFLOAT *image, blasint n, blasint h, blasint w, blasint c,
-            IFLOAT *filter, blasint fh, blasint fw, blasint m,
-            IFLOAT *output, blasint ph, blasint pw,
-            IFLOAT *sa, IFLOAT *sb);
 
 #ifdef __CUDACC__
 }

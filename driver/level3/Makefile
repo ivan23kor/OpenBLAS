@@ -211,7 +211,6 @@ ifeq ($(BUILD_BFLOAT16),1)
 SBBLASOBJS    += sbgemm_thread_nn.$(SUFFIX) sbgemm_thread_nt.$(SUFFIX) sbgemm_thread_tn.$(SUFFIX) sbgemm_thread_tt.$(SUFFIX)
 endif
 SBLASOBJS    += sgemm_thread_nn.$(SUFFIX) sgemm_thread_nt.$(SUFFIX) sgemm_thread_tn.$(SUFFIX) sgemm_thread_tt.$(SUFFIX)
-SBLASOBJS    += yaconv.$(SUFFIX)
 DBLASOBJS    += dgemm_thread_nn.$(SUFFIX) dgemm_thread_nt.$(SUFFIX) dgemm_thread_tn.$(SUFFIX) dgemm_thread_tt.$(SUFFIX)
 QBLASOBJS    += qgemm_thread_nn.$(SUFFIX) qgemm_thread_nt.$(SUFFIX) qgemm_thread_tn.$(SUFFIX) qgemm_thread_tt.$(SUFFIX)
 CBLASOBJS    += cgemm_thread_nn.$(SUFFIX) cgemm_thread_nt.$(SUFFIX) cgemm_thread_nr.$(SUFFIX) cgemm_thread_nc.$(SUFFIX)
@@ -367,9 +366,6 @@ sgemm_tn.$(SUFFIX) : gemm.c level3.c ../../param.h
 
 sgemm_tt.$(SUFFIX) : gemm.c level3.c ../../param.h
 	$(CC) $(CFLAGS) $(BLOCKS) -c -UDOUBLE -UCOMPLEX -DTT $< -o $(@F)
-
-yaconv.$(SUFFIX) : yaconv.c
-	$(CC) $(CFLAGS) $(BLOCKS) -c -UDOUBLE -UCOMPLEX $< -o $(@F)
 
 dgemm_nn.$(SUFFIX) : gemm.c level3.c ../../param.h
 	$(CC) $(CFLAGS) $(BLOCKS) -c -DDOUBLE -UCOMPLEX -DNN $< -o $(@F)

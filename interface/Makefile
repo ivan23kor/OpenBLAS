@@ -282,7 +282,6 @@ CSBLAS3OBJS   = \
 	cblas_sgemm.$(SUFFIX) cblas_ssymm.$(SUFFIX) cblas_strmm.$(SUFFIX) cblas_strsm.$(SUFFIX) \
 	cblas_ssyrk.$(SUFFIX) cblas_ssyr2k.$(SUFFIX) cblas_somatcopy.$(SUFFIX)  cblas_simatcopy.$(SUFFIX)\
 	cblas_sgeadd.$(SUFFIX)
-CSBLAS3OBJS += cblas_yaconv.$(SUFFIX)
 
 ifeq ($(BUILD_BFLOAT16),1)
 CSBBLAS1OBJS = cblas_sbdot.$(SUFFIX)
@@ -402,7 +401,7 @@ SBEXTOBJS     += $(CSBEXTOBJS)
 CBAUXOBJS += $(CXERBLAOBJ)
 endif
 
-SBLASOBJS    = $(SBLAS1OBJS) $(SBLAS2OBJS) $(SBLAS3OBJS)
+SBLASOBJS    = $(SBLAS1OBJS) $(SBLAS2OBJS) $(SBLAS3OBJS) yaconv.$(SUFFIX)
 SBBLASOBJS   = $(SBBLAS1OBJS) $(SBBLAS2OBJS) $(SBBLAS3OBJS)
 DBLASOBJS    = $(DBLAS1OBJS) $(DBLAS2OBJS) $(DBLAS3OBJS)
 QBLASOBJS    = $(QBLAS1OBJS) $(QBLAS2OBJS) $(QBLAS3OBJS)
@@ -2344,5 +2343,5 @@ cblas_zgeadd.$(SUFFIX) cblas_zgeadd.$(PSUFFIX) : zgeadd.c
 cblas_xerbla.$(SUFFIX) cblas_xerbla.$(PSUFFIX) : xerbla.c
 	$(CC) -c $(CFLAGS) -DCBLAS $< -o $(@F)
 
-cblas_yaconv.$(SUFFIX) : yaconv.c
-	$(CC) -c $(CFLAGS) -DCBLAS $< -o $(@F)
+yaconv.$(SUFFIX) : yaconv.c
+	$(CC) -c $(CFLAGS) $< -o $(@F)
