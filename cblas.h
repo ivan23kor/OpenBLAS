@@ -408,9 +408,9 @@ blasint yaconv_extra_size_before(blasint fh, blasint ow, blasint m);
 blasint yaconv_extra_size(blasint h, blasint fh, blasint ph, blasint ow,
                           blasint m);
 
-void yaconv(float *image, blasint n, blasint h, blasint w, blasint c,
+void yaconv(float **images, blasint n, blasint h, blasint w, blasint c,
             float *filter, blasint fh, blasint fw, blasint m,
-            float *output, blasint ph, blasint pw);
+            float **outputs, blasint ph, blasint pw);
 
 #ifdef __cplusplus
 }
