@@ -40,44 +40,53 @@
 #include <stdlib.h>
 #include "common.h"
 
-void edge_oncopy(blasint k, blasint n, float *a, blasint lda, float *b) {
+void edge_oncopy(blasint k, blasint n, float *b, blasint ldb, float *sb) {
+  blasint i;
   blasint whole_n = n - n % GEMM_UNROLL_N;
-  GEMM_ONCOPY(k, whole_n, a, lda, b);
 
-  b += whole_n * k;
+  GEMM_ONCOPY(k, whole_n, b, ldb, sb);
+
+  b += whole_n * ldb;
+  sb += whole_n * k;
   n -= whole_n;
 
-  float *a_off = a, *b_off = b;
   while (k > 0) {
-    for (int i = 0; i < n; ++i)
-      b_off[i] = a_off[lda * i];
-
-    ++a_off;
-    b_off += GEMM_UNROLL_N;
+    i = 0;
+    while (i++ < n) {
+      *(sb++) = *b;
+      b += ldb;
+    }
+    while (i++ < GEMM_UNROLL_N)
+      *(sb++) = 0.0;
+    b += 1 - n * ldb;
     --k;
   }
 }
 
-blasint yaconv_extra_size_before(blasint fh, blasint ow, blasint m) {
-  return (fh - 1) * ow * m;
+blasint yaconv_extra_size_before(blasint fh, blasint ph, blasint ow,
+                                 blasint m) {
+  return (fh - 1 - ph) * ow * m;
 }
 
-static inline blasint yaconv_extra_size_after(blasint h, blasint ph, blasint ow,
+static inline blasint yaconv_extra_size_after(blasint h, blasint fh,
+                                              blasint ph, blasint ow,
                                               blasint m) {
-  blasint whole_h = (h & ~(GEMM_UNROLL_N - 1)) + GEMM_UNROLL_N;
-  return (whole_h + ph) * ow * m;
+  blasint extra_h = 0;
+  if (h % GEMM_UNROLL_N)
+    extra_h = GEMM_UNROLL_N - h % GEMM_UNROLL_N;
+  return (extra_h + fh - 1 - ph) * ow * m;
 }
 
 blasint yaconv_extra_size(blasint h, blasint fh, blasint ph, blasint ow,
                           blasint m) {
-  return yaconv_extra_size_before(fh, ow, m)
-       + yaconv_extra_size_after(h, ph, ow, m);
+  return yaconv_extra_size_before(fh, ph, ow, m)
+       + yaconv_extra_size_after(h, fh, ph, ow, m);
 }
 
-static void yaconv_single_image(float *image, blasint H, blasint W, blasint C,
-                                float *filter, blasint FH, blasint FW, blasint M,
-                                float *output, blasint PH, blasint PW,
-                                float *sa, float *sb) {
+void yaconv_single_image(float *image, blasint H, blasint W, blasint C,
+                         float *filter, blasint FH, blasint FW, blasint M,
+                         float *output, blasint PH, blasint PW,
+                         float *sa, float *sb) {
 
   // Cache sizes used by the conventional GEMM
   const blasint l2_size = GEMM_P * GEMM_Q;
@@ -94,7 +103,7 @@ static void yaconv_single_image(float *image, blasint H, blasint W, blasint C,
 
   // Shift output array pointer as yaconv addresses some space before the actual
   // output. This requires additional memory to be allocated for output
-  output += yaconv_extra_size_before(FH, OW, M);
+  output += yaconv_extra_size_before(FH, PH, OW, M);
 
   // Zero-out output to use alpha == 1 in every microkernel call later
   GEMM_BETA(M, OH * OW, 0, 0, NULL, 0, NULL, 0, output, M);
