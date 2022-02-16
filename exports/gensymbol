@@ -80,7 +80,7 @@
     cblas_stbmv, cblas_stbsv, cblas_stpmv, cblas_stpsv, cblas_strmm, cblas_strmv, cblas_strsm,
     cblas_strsv, cblas_sgeadd,
     cblas_isamax, cblas_isamin, cblas_ismin, cblas_ismax, cblas_ssum,cblas_simatcopy,cblas_somatcopy,
-    yaconv, yaconv_extra_size
+    yaconv, yaconv_extra_size, yaconv_extra_size_before
     );
 @cblasobjsz = (
     cblas_dzasum, cblas_dznrm2, cblas_zaxpy, cblas_zcopy, cblas_zdotc, cblas_zdotu, cblas_zdscal,
